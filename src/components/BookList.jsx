@@ -1,41 +1,49 @@
-import { Component } from 'react'
-import SingleBook from './SingleBook'
-import { Col, Form, Row } from 'react-bootstrap'
+import React, { Component } from 'react';
+import { Col, Row } from 'react-bootstrap';
+import SingleBook from './SingleBook';
+import CommentArea from './CommentArea';
 
 class BookList extends Component {
   state = {
-    searchQuery: '',
-  }
+    searchQuery: "",
+    asin: "",
+  };
+
+  changeCardSelected = (newSelectedValue) => {
+    this.setState({
+      asin: newSelectedValue,
+    })
+  };
 
   render() {
+    const { books } = this.props;
+    const { changeCardSelected } = this.state;
+
     return (
-      <>
-        <Row className="justify-content-center mt-5">
-          <Col xs={12} md={4} className="text-center">
-            <Form.Group>
-              <Form.Control
-                type="search"
-                placeholder="Cerca un libro"
-                value={this.state.searchQuery}
-                onChange={(e) => this.setState({ searchQuery: e.target.value })}
-              />
-            </Form.Group>
-          </Col>
-        </Row>
-        <Row className="g-2 mt-3">
-          {this.props.books
-            .filter((b) =>
-              b.title.toLowerCase().includes(this.state.searchQuery)
-            )
-            .map((b) => (
-              <Col xs={12} md={4} key={b.asin}>
-                <SingleBook book={b} />
+      <Row className="mt-5">
+        {/* Colonna sinistra - Lista dei libri */}
+        <Col md={6}>
+          <Row className="g-2 mt-3">
+            {books.map((book) => (
+              <Col xs={12} md={6} lg={4} key={book.asin}>
+                <SingleBook
+                  book={book}
+                  // onSelect={() => this.changeCardSelected(book.asin)}
+                  // isSelected={selectedBookAsin === book.asin}
+                  asin={this.state.asin} 
+                  changeCardSelected={this.changeCardSelected}
+                />
               </Col>
             ))}
-        </Row>
-      </>
-    )
+          </Row>
+        </Col>
+        {/* Colonna destra - CommentArea */}
+        <Col md={6}>
+          <CommentArea asin={this.state.asin}/>
+        </Col>
+      </Row>
+    );
   }
 }
 
-export default BookList
+export default BookList;
