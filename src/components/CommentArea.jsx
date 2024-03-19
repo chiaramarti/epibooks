@@ -1,9 +1,8 @@
-import { Component, useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import CommentList from './CommentList'
 import AddComment from './AddComment'
 import Loading from './Loading'
 import Error from './Error'
-import { setSelectionRange } from '@testing-library/user-event/dist/utils'
 
 
 const CommentArea = ({asin}) => {
