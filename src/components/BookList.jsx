@@ -17,7 +17,7 @@ const BookList = ({books}) => {
     return (
       <>
         <Row>
-          <Col md={8}>
+          <Col xs={6} md={8}>
             <Row className="justify-content-center mt-5">
               <Col xs={12} md={4} className="text-center">
                 <Form.Group>
@@ -46,7 +46,7 @@ const BookList = ({books}) => {
                 ))}
             </Row>
           </Col>
-          <Col md={4}>
+          <Col xs={6} md={4}>
             <CommentArea asin={selectedBook} />
           </Col>
         </Row>
