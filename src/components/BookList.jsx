@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import {React} from 'react';
 import SingleBook from './SingleBook'
 import { Col, Form, Row } from 'react-bootstrap'
 import CommentArea from './CommentArea'
+import { useState } from 'react';
 
 const BookList = ({books}) => {
   
@@ -12,7 +13,6 @@ const BookList = ({books}) => {
   const changeSelectedBook = (asin) => {
     setSelectedBook(asin)
   }
-
 
     return (
       <>
@@ -31,7 +31,7 @@ const BookList = ({books}) => {
               </Col>
             </Row>
             <Row className="g-2 mt-3">
-              {this.props.books
+              {books
                 .filter((b) =>
                   b.title.toLowerCase().includes(searchQuery)
                 )
