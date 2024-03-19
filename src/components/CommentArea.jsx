@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import CommentList from './CommentList';
 import AddComment from './AddComment';
 import Loading from './Loading';
@@ -9,62 +9,50 @@ class CommentArea extends Component {
     comments: [],
     isLoading: false,
     isError: false,
-  };
-
-  componentDidMount(){
-    this.loadComments();
   }
 
-  componentDidUpdate(prevProps) {
-    if (this.props.asin !== prevProps.asin) {
-      this.loadComments();
-    }
-  }
-
-  loadComments = async () => {
-    const { selectedBookAsin } = this.props;
-    if (selectedBookAsin) {
-      this.setState({ isLoading: true });
-      try {
-        let response = await fetch(
-          'https://striveschool-api.herokuapp.com/api/comments/' + selectedBookAsin,
-          {
-            headers: {
-              Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NWUxYzA5ODRjNTllYzAwMTk5MGQ4NzgiLCJpYXQiOjE3MTA3Njg4NDksImV4cCI6MTcxMTk3ODQ0OX0.iQR1qxIriAyShjRHEOwIHwWVZxIKp_Rt4vqgxWA00lY',
-            },
+  compenentDidUpdate = async (prevProps) => {
+   if (prevProps.asin !== this.props.asin) {
+    this.setState({
+      isLoading: true,
+    })
+    try {
+      let response = await fetch(
+        'https://striveschool-api.herokuapp.com/api/comments/' +
+        this.props.asin,
+        {
+          headers: {
+            Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NWUxYzA5ODRjNTllYzAwMTk5MGQ4NzgiLCJpYXQiOjE3MTA3Njg4NDksImV4cCI6MTcxMTk3ODQ0OX0.iQR1qxIriAyShjRHEOwIHwWVZxIKp_Rt4vqgxWA00lY',
           }
-        );
-        if (response.ok) {
-          let comments = await response.json();
-          this.setState({ comments: comments, isLoading: false, isError: false });
-        } else {
-          this.setState({ isLoading: false, isError: true });
         }
-      } catch (error) {
-        console.log(error);
-        this.setState({ isLoading: false, isError: true });
+      )
+      console.log(response)
+      if (response.ok) {
+        let comments = await response.json()
+        this.setState({
+          comments: comments,
+          isLoading: false,
+          isError: false,
+        })
+      } else {
+        this.setState({ isLoading: false, isError: true })
       }
-    } else {
-      this.setState({ comments: [], isLoading: false, isError: false });
+    } catch (error) {
+      console.log(error)
+      this.setState({isLoading: false, isError: true})
     }
-  };
+   }
+  }
 
   render() {
-    const { isLoading, isError, comments } = this.state;
-    const { selectedBookAsin } = this.props;
-
     return (
       <div className="text-center">
-        {isLoading && <Loading />}
-        {isError && <Error />}
-        {selectedBookAsin && (
-          <>
-            <AddComment asin={selectedBookAsin} />
-            <CommentList commentsToShow={comments} />
-          </>
-        )}
+        {this.state.isLoading && <Loading />}
+        {this.state.isError && <Error />}
+        <AddComment asin={this.props.asin} />
+        <CommentList commentsToShow={this.state.comments} />
       </div>
-    );
+    )
   }
 }
 
