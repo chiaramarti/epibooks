@@ -5,7 +5,8 @@ import Loading from './Loading'
 import Error from './Error'
 
 
-const CommentArea = ({asin}) => {
+const CommentArea = ({asin}) => {  // oppure lascio PROPS di modo da sapere che è un oggetto
+                                   // se voglio estrapolare allora da ui uso la dot.notation 
   
   const [comments, setComments] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
